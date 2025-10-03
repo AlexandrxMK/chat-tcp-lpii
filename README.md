@@ -14,22 +14,6 @@ Além da biblioteca, a arquitetura inicial do projeto foi definida e a estrutura
 
 ---
 
-## Estrutura de Diretórios
-chat-tcp-lpii/
-├── .gitignore
-├── Makefile
-├── README.md
-├── diagrams/
-│ └── arquitetura.md
-├── include/
-│ └── logger.h
-├── src/
-│ └── logger.cpp
-└── tests/
-└── test_logger.cpp
-
----
-
 ## Entregas desta Etapa
 - **Logger Thread-Safe:** Implementação completa nos arquivos `include/logger.h` e `src/logger.cpp`.  
 - **Teste de Concorrência:** Programa em `tests/test_logger.cpp` que simula múltiplas threads gravando logs simultaneamente, verificando a segurança da implementação.  

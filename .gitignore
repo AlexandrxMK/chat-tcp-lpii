@@ -1,0 +1,16 @@
+Arquivos gerados pelo compilador C++
+Ignora todos os arquivos que terminam com .o
+*.o
+
+Executáveis gerados pelo Makefile
+Ignora os arquivos específicos do nosso projeto
+server
+client
+test_runner
+
+Arquivos de Log
+Ignora o arquivo de log gerado pela aplicação
+log.txt
+
+Arquivos de configuração de editores (opcional, mas boa prática)
+.vscode/

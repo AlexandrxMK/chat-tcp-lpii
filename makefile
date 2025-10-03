@@ -7,28 +7,41 @@ CXXFLAGS = -std=c++17 -Wall -g -pthread
 # Diretório de includes
 IDIR = -Iinclude
 
-# Nome do executável final
-TARGET = test_runner
+# --- Alvos/Executáveis ---
+SERVER_TARGET = server
+CLIENT_TARGET = client
+TEST_TARGET = test_runner
 
-# Fontes: lista todos os .cpp que serão usados
-SOURCES = src/logger.cpp tests/test_logger.cpp
+# --- Fontes e Objetos ---
+COMMON_SOURCES = src/logger.cpp
+SERVER_SOURCES = src/server.cpp $(COMMON_SOURCES)
+CLIENT_SOURCES = src/client.cpp $(COMMON_SOURCES) # Adicionamos o client.cpp aqui
+TEST_SOURCES = tests/test_logger.cpp $(COMMON_SOURCES)
 
-# Objetos: converte a lista de .cpp para .o
-OBJECTS = $(SOURCES:.cpp=.o)
-
-# Regra principal: compila o alvo
-all: $(TARGET)
-
-# Regra de linkagem: junta os arquivos .o para criar o executável
-$(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
-
-# Regra de compilação: transforma qualquer .cpp em .o
+# Regra para converter .cpp em .o
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(IDIR) -c -o $@ $<
 
-# Regra para limpar os arquivos gerados
-clean:
-	rm -f $(TARGET) $(OBJECTS) log.txt
+# --- Regras Principais ---
 
-.PHONY: all clean
+# 'make' ou 'make all' agora compila o servidor E o cliente
+all: $(SERVER_TARGET) $(CLIENT_TARGET)
+
+# Regra de linkagem para o servidor
+$(SERVER_TARGET): $(SERVER_SOURCES:.cpp=.o)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Regra de linkagem para o cliente
+$(CLIENT_TARGET): $(CLIENT_SOURCES:.cpp=.o)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Regra para compilar e rodar o teste do logger
+test: $(TEST_TARGET)
+$(TEST_TARGET): $(TEST_SOURCES:.cpp=.o)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Regra para limpar tudo
+clean:
+	rm -f $(SERVER_TARGET) $(CLIENT_TARGET) $(TEST_TARGET) src/*.o tests/*.o log.txt
+
+.PHONY: all clean test

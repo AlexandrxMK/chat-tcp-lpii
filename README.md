@@ -1,46 +1,83 @@
-# Trabalho Final — Programação Concorrente (Etapa 1)
+# Trabalho Final — Programação Concorrente (Etapas 1 e 2)
 
 ## Tema: Servidor de Chat Multiusuário (TCP)
 
-Este repositório contém a primeira etapa do desenvolvimento de um servidor de chat multiusuário em C++, como parte do trabalho final da disciplina de Programação Concorrente.
+Este repositório contém o desenvolvimento de um servidor de chat multiusuário em C++, como parte do trabalho final da disciplina de Programação Concorrente.  
+O projeto é construído em etapas, com progresso marcado por tags do Git (`v1-logging`, `v2-cli`, etc.).
 
 ---
 
-## Objetivo da Etapa 1
-O foco desta etapa foi a implementação de uma biblioteca de **logging thread-safe (Logger)** em C++.  
-Esta biblioteca foi projetada com uma API clara e segura para garantir que múltiplas threads possam registrar mensagens em um arquivo de log de forma concorrente, sem causar condições de corrida ou corromper o arquivo.
+## Etapa 1: Biblioteca de Logging Thread-Safe
 
-Além da biblioteca, a arquitetura inicial do projeto foi definida e a estrutura de diretórios foi organizada para facilitar o desenvolvimento futuro.
+**Tag:** `v1-logging`
+
+O foco desta etapa foi a implementação de uma biblioteca de logging thread-safe (`Logger`) e a definição da arquitetura inicial do sistema.  
+Essa base garante que eventos possam ser registrados de forma segura em um ambiente concorrente.
+
+**Entregas principais da Etapa 1:**
+- **Logger Thread-Safe:** `include/logger.h` e `src/logger.cpp`
+- **Teste de Concorrência:** `tests/test_logger.cpp`
+- **Arquivo de log:** `log.txt` gerado pelo teste
+- **Diagrama de Arquitetura:** `diagrams/arquitetura.md`
 
 ---
 
-## Entregas desta Etapa
-- **Logger Thread-Safe:** Implementação completa nos arquivos `include/logger.h` e `src/logger.cpp`.  
-- **Teste de Concorrência:** Programa em `tests/test_logger.cpp` que simula múltiplas threads gravando logs simultaneamente, verificando a segurança da implementação.  
-- **Arquivo de Log:** O teste gera um arquivo `log.txt` como saída.  
-- **Diagrama de Arquitetura:** Arquivo `diagrams/arquitetura.md` descrevendo a arquitetura inicial do sistema.  
-- **Makefile:** Makefile funcional para compilar o projeto (`make` ou `make all`) e limpar os arquivos gerados (`make clean`).  
+## Etapa 2: Protótipo de Comunicação CLI
+
+**Tag:** `v2-cli`
+
+Nesta etapa, foi implementado o protótipo funcional cliente-servidor.
+
+### Servidor (`server`)
+- Executável que inicia um servidor TCP na porta 8080.
+- Cria uma thread para cada cliente conectado (concorrente).
+- Todas as mensagens recebidas são retransmitidas (broadcast) para os demais clientes.
+
+### Cliente (`client`)
+- Executável de linha de comando para conectar-se ao servidor.
+- Permite enviar mensagens e receber mensagens de outros usuários em tempo real.
+
+### Logging
+O logger da Etapa 1 foi totalmente integrado para registrar eventos importantes, como conexões, desconexões e mensagens recebidas.
 
 ---
 
 ## Como Compilar e Executar
-Siga os passos abaixo para compilar e executar o programa de teste do logger.
 
-### 1. Compilar o projeto
+### 1. Compilar o Projeto
+
 Na raiz do repositório, execute:
-```bash
+
+```sh
 make
-Isso irá compilar o código-fonte e gerar o executável test_runner.
 
-2. Executar o teste
-Após a compilação, rode:
-./test_runner
+Isso irá compilar o projeto e gerar os executáveis principais: server e client.
 
-3. Verificar a saída
-A execução irá gerar (ou sobrescrever) um arquivo chamado log.txt na raiz do projeto.
-Você pode abri-lo para verificar os logs gravados pelas diferentes threads.
+Para garantir uma compilação limpa, utilize:
 
-4. Limpar o projeto
-Para remover o executável e o arquivo de log, utilize:
+make clean && make
+
+2. Executar o Chat
+Você precisará de pelo menos dois terminais abertos na pasta do projeto.
+
+No Terminal 1 (Servidor):
+
+./server
+
+O servidor ficará rodando e aguardando conexões.
+
+Nos Terminais 2, 3, 4, etc. (Clientes):
+
+./client
+
+Digite sua mensagem e pressione Enter.
+As mensagens dos outros usuários aparecerão em tempo real.
+
+Para sair do chat, digite:
+
+sair
+
+3. Limpar os Arquivos Gerados
+Para remover todos os executáveis, arquivos objeto e o arquivo log.txt:
 
 make clean

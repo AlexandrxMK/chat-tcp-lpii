@@ -1,9 +1,8 @@
 #include <iostream>
 #include <thread>
 #include <vector>
-#include "logger.h" // Importa a sua biblioteca de log
+#include "logger.h" 
 
-// Função que será executada por cada thread
 void log_messages_from_thread(int thread_id) {
     for (int i = 0; i < 20; ++i) {
         std::string message = "Thread " + std::to_string(thread_id) + " escrevendo a mensagem " + std::to_string(i);

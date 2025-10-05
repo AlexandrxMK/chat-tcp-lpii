@@ -36,17 +36,14 @@ int main() {
     cout << "Conectado com sucesso ao servidor! Pode comecar a enviar mensagens." << endl;
     cout << "Digite 'sair' para desconectar." << endl;
 
-    // Criar uma thread separada para RECEBER mensagens do servidor
     thread(receive_messages, client_fd).detach();
 
-    // Loop principal para ENVIAR mensagens para o servidor
     string line;
     while (getline(cin, line)) {
         if (line == "sair") {
             break;
         }
 
-        // Envia a mensagem digitada para o servidor
         send(client_fd, line.c_str(), line.length(), 0);
     }
 
@@ -55,17 +52,14 @@ int main() {
     return 0;
 }
 
-// Função que roda em uma thread para ficar escutando mensagens do servidor
 void receive_messages(int socket_fd) {
     char buffer[BUFFER_SIZE];
-    while (true) {
+    while (true) {S
         memset(buffer, 0, BUFFER_SIZE);
         int bytes_read = read(socket_fd, buffer, BUFFER_SIZE - 1);
         
-        // Se o servidor fechar a conexão, read() retorna 0 ou -1
         if (bytes_read <= 0) {
             cout << "\nVoce foi desconectado do servidor." << endl;
-            // Força o encerramento do programa cliente
             close(socket_fd);
             exit(0);
         }

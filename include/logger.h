@@ -6,7 +6,6 @@
 #include <string>
 #include <mutex>
 
-// Thread-Safe Logger Class (Singleton)
 class Logger {
 public:
     static Logger& getInstance();
@@ -23,4 +22,4 @@ private:
     std::mutex m_mutex;
 };
 
-#endif // LOGGER_H
+#endif 
